@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Elite Tailoring</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/main.css" />
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <h1 class="logo">Elite Tailoring</h1>
+      <ul class="nav-links">
+        <li><a href="/about">About</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <% if (currentUser) { %>
+        <!-- Show cart and dropdown if logged in -->
+        <li><a href="/cart">Cart</a></li>
+
+        <% } else { %>
+        <!-- Show login button if NOT logged in -->
+
+        <% } %> <% if (currentUser) { %>
+        <!-- Show dropdown if logged in -->
+        <li class="dropdown">
+          <button class="dropbtn"><%= currentUser.name %></button>
+          <div class="dropdown-content">
+            <a href="/logout">Logout</a>
+          </div>
+        </li>
+        <% } else { %>
+        <!-- Show login button if NOT logged in -->
+        <li><a href="/login" class="btn">Login</a></li>
+        <% } %>
+      </ul>
+    </nav>
+  </body>
+</html>

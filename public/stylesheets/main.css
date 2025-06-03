@@ -1,0 +1,156 @@
+navbar.css * {
+  box-sizing: border-box;
+}
+
+body {
+  padding-top: 80px;
+}
+
+nav.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  z-index: 999;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: black;
+}
+.search-container {
+  position: relative;
+  margin: 0 20px;
+  flex-grow: 1;
+  max-width: 500px;
+}
+
+#search-input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* navbar.css - updated */
+.search-results .product-card {
+  display: flex;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.search-results .product-card:hover {
+  background: #f9f9f9;
+}
+
+.search-results .product-card img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.search-results .product-info {
+  flex-grow: 1;
+}
+
+.search-results .product-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.search-results .product-price {
+  color: #e53935;
+  font-size: 14px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #ff9800;
+}
+
+.btn,
+.dropbtn {
+  padding: 0.6rem 1.2rem;
+  background-color: #ff9800;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn:hover,
+.dropbtn:hover {
+  background-color: #e68900;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: white;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 10px 14px;
+  text-decoration: none;
+  display: block;
+  font-weight: 500;
+}
+
+.dropdown-content a:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+
+  .btn,
+  .dropbtn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}

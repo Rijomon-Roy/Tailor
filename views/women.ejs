@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> - Women's Collection</title>
+    <link rel="stylesheet" href="/stylesheets/women.css" />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/stylesheets/main.css" />
+
+    <style>
+      :root {
+        --primary: #2d3748;
+        --secondary: #4a5568;
+        --accent: #718096;
+        --light: #f7fafc;
+        --highlight: #e2e8f0;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        color: var(--primary);
+        background-color: var(--light);
+        line-height: 1.6;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Layout Styles */
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+
+      .flex-grow {
+        flex-grow: 1;
+      }
+
+      /* Hero Section */
+      .hero-container {
+        display: flex;
+        justify-content: center;
+        background-color: #f3e8ff; /* Light purple background color */
+        padding: 20px 0;
+      }
+
+      .hero-image-wrapper {
+        max-width: 800px; /* Reduced width */
+        height: 285px; /* Reduced height */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #e9d5ff; /* Slightly darker purple for the image wrapper */
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .hero-image {
+        height: 100%;
+        width: auto;
+        object-fit: cover;
+      }
+
+      /* Text Styles */
+      .text-3xl {
+        font-size: 1.875rem;
+      }
+
+      .md\:text-4xl {
+        font-size: 2.25rem;
+      }
+
+      .font-light {
+        font-weight: 300;
+      }
+
+      .mb-2 {
+        margin-bottom: 0.5rem;
+      }
+
+      .text-gray-300 {
+        color: #d1d5db;
+      }
+
+      .max-w-2xl {
+        max-width: 42rem;
+      }
+
+      .mx-auto {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* Product Grid */
+      .grid {
+        display: grid;
+        justify-items: center;
+      }
+
+      .grid-cols-1 {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+      }
+
+      .sm\:grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .lg\:grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .xl\:grid-cols-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .gap-8 {
+        gap: 2rem;
+      }
+
+      .py-12 {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+      }
+
+      .px-4 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      /* Product Card */
+      .bg-white {
+        background-color: white;
+      }
+
+      .rounded-lg {
+        border-radius: 0.5rem;
+      }
+
+      .overflow-hidden {
+        overflow: hidden;
+      }
+
+      .shadow-sm {
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      }
+
+      .hover\:shadow-md:hover {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
+      .transition-shadow {
+        transition-property: box-shadow;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+      }
+
+      /* Product Image */
+      .aspect-square {
+        aspect-ratio: 1/1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f8f9fa;
+        overflow: hidden;
+      }
+
+      .object-cover {
+        object-fit: cover;
+        width: 70%;
+        height: 100%;
+        max-height: 100%;
+        transition: transform 0.5s ease;
+      }
+      .object-cover[src*="large-images"] {
+        object-fit: contain;
+        width: 90%;
+        height: 90%;
+      }
+
+      .hover\:scale-105:hover {
+        transform: scale(1.05);
+      }
+
+      .transition-transform {
+        transition-property: transform;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 500ms;
+      }
+
+      /* Product Info */
+      .product-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      .product-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .p-4 {
+        padding: 1rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .font-medium {
+        font-weight: 500;
+      }
+
+      .text-lg {
+        font-size: 1.125rem;
+      }
+
+      .mb-1 {
+        margin-bottom: 0.25rem;
+      }
+
+      .text-gray-600 {
+        color: #4b5563;
+      }
+
+      .text-sm {
+        font-size: 0.875rem;
+      }
+
+      .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 1rem;
+      }
+
+      .mt-4 {
+        margin-top: auto;
+      }
+
+      .flex {
+        display: flex;
+      }
+
+      .items-center {
+        align-items: center;
+      }
+
+      .justify-between {
+        justify-content: space-between;
+      }
+
+      .font-semibold {
+        font-weight: 600;
+      }
+
+      /* Button Styles */
+      .px-4 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      .py-2 {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+      }
+
+      .bg-gray-800 {
+        background-color: #1f2937;
+      }
+
+      .text-white {
+        color: white;
+      }
+
+      .rounded {
+        border-radius: 0.25rem;
+      }
+
+      .hover\:bg-gray-700:hover {
+        background-color: #374151;
+      }
+
+      .transition-colors {
+        transition-property: background-color, border-color, color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+      }
+
+      /* Footer Styles */
+      .bg-gray-800 {
+        background-color: #1f2937;
+      }
+
+      .text-gray-300 {
+        color: #d1d5db;
+      }
+
+      .py-6 {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+      }
+
+      /* Responsive Breakpoints */
+      @media (min-width: 640px) {
+        .sm\:grid-cols-2 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .lg\:grid-cols-3 {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      @media (min-width: 1280px) {
+        .xl\:grid-cols-4 {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .md\:text-4xl {
+          font-size: 2.25rem;
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="navbar">
+      <h1 class="logo">Elite Tailoring</h1>
+      <div class="search-container" id="search-container">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search products..."
+          autocomplete="off"
+        />
+        <div id="search-results" class="search-results"></div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="/about">About</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <% if (currentUser) { %>
+        <!-- Show cart and dropdown if logged in -->
+        <li><a href="/cart">Cart</a></li>
+
+        <% } else { %>
+        <!-- Show login button if NOT logged in -->
+
+        <% } %> <% if (currentUser) { %>
+        <!-- Show dropdown if logged in -->
+        <li class="dropdown">
+          <button class="dropbtn"><%= currentUser.name %></button>
+          <div class="dropdown-content">
+            <a href="/logout">Logout</a>
+          </div>
+        </li>
+        <% } else { %>
+        <!-- Show login button if NOT logged in -->
+        <li><a href="/login" class="btn">Login</a></li>
+        <% } %>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+      <!-- Hero Section -->
+      <!-- <section class="hero-container">
+        <div class="hero-image-wrapper">
+          <img
+            src="/images/banner.jpg"
+            alt="Women's fashion collection"
+            class="hero-image"
+          />
+        </div>
+      </section> -->
+
+      <!-- Products Section -->
+      <section class="container mx-auto px-4 py-12">
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+        >
+          <% products.forEach(product => { %>
+          <div
+            class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 product-card"
+          >
+            <!-- Product Image -->
+            <div class="aspect-square overflow-hidden">
+              <img
+                src="<%= product.imageUrl %>"
+                alt="<%= product.name %>"
+                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+
+            <!-- Product Info -->
+            <div class="p-4 product-content">
+              <h3 class="font-medium text-lg mb-1"><%= product.name %></h3>
+              <p class="text-gray-600 text-sm line-clamp-2">
+                <%= product.description %>
+              </p>
+
+              <div class="flex items-center justify-between mt-4">
+                <span class="font-semibold">₹<%= product.price %></span>
+
+                <form action="/cart/add" method="POST">
+                  <input
+                    type="hidden"
+                    name="productId"
+                    value="<%= product._id %>"
+                  />
+                  <button
+                    type="submit"
+                    class="px-4 py-2 bg-gray-800 text-white text-sm rounded hover:bg-gray-700 transition-colors"
+                  >
+                    Add to Cart
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-6 text-center text-sm">
+      <div class="container mx-auto px-4">
+        <p>© 2025 Elite Tailoring | All Rights Reserved</p>
+      </div>
+    </footer>
+    <!-- <script src="/javascripts/searchbar.js"></script> -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("search-input");
+        const searchResults = document.getElementById("search-results");
+        const searchContainer = document.getElementById("search-container"); // Fixed: Added this line
+
+        // Simple mock data - REPLACE THIS WITH REAL API CALLS
+        const mockProducts = [
+          {
+            id: 1,
+            name: "Men's Tailored Suit",
+            price: 299.99,
+            image: "/images/suit.jpg",
+          },
+          {
+            id: 2,
+            name: "Women's Formal Dress",
+            price: 199.99,
+            image: "/images/dress.jpg",
+          },
+          {
+            id: 3,
+            name: "Custom Shirt",
+            price: 89.99,
+            image: "/images/shirt.jpg",
+          },
+        ];
+
+        function debounce(func, wait) {
+          let timeout;
+          return function (...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+          };
+        }
+
+        // Mock search function - REPLACE WITH REAL API CALL
+        const mockSearch = (query) => {
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              const results = mockProducts.filter((product) =>
+                product.name.toLowerCase().includes(query.toLowerCase())
+              );
+              resolve(results);
+            }, 300);
+          });
+        };
+
+        const fetchResults = debounce(async (query) => {
+          if (query.length < 2) {
+            searchResults.style.display = "none";
+            return;
+          }
+
+          try {
+            // TEMPORARY: Using mock data - replace with real API call
+            const products = await mockSearch(query);
+            // For real implementation, use:
+            // const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+            // const products = await response.json();
+
+            if (products.length > 0) {
+              searchResults.innerHTML = products
+                .map(
+                  (product) => `
+          <div class="product-card" onclick="window.location.href='/products/${
+            product.id
+          }'">
+            <img src="${product.image || "/images/placeholder.jpg"}" alt="${
+                    product.name
+                  }">
+            <div class="product-info">
+              <div class="product-name">${product.name}</div>
+              <div class="product-price">$${product.price.toFixed(2)}</div>
+            </div>
+          </div>
+        `
+                )
+                .join("");
+              searchResults.style.display = "block";
+            } else {
+              searchResults.innerHTML =
+                '<div class="no-results">No products found</div>';
+              searchResults.style.display = "block";
+            }
+          } catch (error) {
+            console.error("Search error:", error);
+            searchResults.innerHTML =
+              '<div class="no-results">Error loading results</div>';
+            searchResults.style.display = "block";
+          }
+        }, 300);
+
+        searchInput.addEventListener("input", (e) => {
+          fetchResults(e.target.value.trim());
+        });
+
+        document.addEventListener("click", (e) => {
+          if (!searchContainer.contains(e.target)) {
+            searchResults.style.display = "none";
+          }
+        });
+
+        searchInput.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") {
+            searchResults.style.display = "none";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Product</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 24px;
+        color: #333333;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #555555;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      textarea,
+      input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #dddddd;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 14px;
+      }
+
+      input[type="text"]:focus,
+      input[type="number"]:focus,
+      textarea:focus,
+      input[type="file"]:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
+      }
+
+      textarea {
+        resize: none;
+      }
+
+      .error-message {
+        color: #ff4d4f;
+        background-color: #fff4f4;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ffcccc;
+        margin-bottom: 20px;
+        font-size: 14px;
+      }
+
+      .form-group img {
+        max-width: 100%;
+        height: auto;
+        border: 1px solid #dddddd;
+        border-radius: 5px;
+        margin-bottom: 10px;
+      }
+
+      small {
+        display: block;
+        margin-top: 5px;
+        color: #777777;
+        font-size: 12px;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: #ffffff;
+        text-align: center;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn:hover {
+        background-color: #0056b3;
+      }
+
+      .btn-cancel {
+        background-color: #6c757d;
+        margin-left: 10px;
+      }
+
+      .btn-cancel:hover {
+        background-color: #5a6268;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Update Product</h1>
+
+      <% if (typeof error !== 'undefined') { %>
+      <div class="error-message"><%= error %></div>
+      <% } %>
+
+      <form
+        method="POST"
+        action="/admin/womencollection/update-product/<%= product._id %>"
+        enctype="multipart/form-data"
+      >
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value="<%= product.name %>"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="price">Price:</label>
+          <input
+            type="number"
+            id="price"
+            name="price"
+            value="<%= product.price %>"
+            min="0.01"
+            step="0.01"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea id="description" name="description" rows="4" required>
+<%= product.description %>
+          </textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Current Image:</label>
+          <% if (product.imageUrl) { %>
+          <img src="<%= product.imageUrl %>" alt="Current Product Image" />
+          <input
+            type="hidden"
+            name="currentImageUrl"
+            value="<%= product.imageUrl %>"
+          />
+          <% } else { %>
+          <p>No image currently set</p>
+          <% } %>
+        </div>
+
+        <div class="form-group">
+          <label for="imageFile">Update Image (optional):</label>
+          <input type="file" id="imageFile" name="imageFile" accept="image/*" />
+          <small>Max size: 5MB. Accepted formats: JPG, PNG, GIF</small>
+        </div>
+
+        <button type="submit" class="btn">Update Product</button>
+        <a href="/admin/womencollection" class="btn btn-cancel">Cancel</a>
+      </form>
+    </div>
+  </body>
+</html>

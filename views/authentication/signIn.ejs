@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .register-wrapper {
+        width: 100%;
+        max-width: 450px;
+        padding: 20px;
+      }
+
+      .register-card {
+        background: #fff;
+        padding: 40px 60px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .register-title {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+      }
+
+      .register-form .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+      }
+
+      .register-form label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #555;
+      }
+
+      .register-form input {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: 0.3s ease;
+      }
+
+      .register-form input:focus {
+        border-color: #28a745;
+        outline: none;
+      }
+
+      .register-btn {
+        width: 110%;
+        padding: 12px;
+        background-color: #28a745;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .register-btn:hover {
+        background-color: #1e7e34;
+      }
+
+      .login-link {
+        margin-top: 15px;
+        font-size: 14px;
+      }
+
+      .login-link a {
+        color: #28a745;
+        text-decoration: none;
+      }
+
+      .login-link a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="register-wrapper">
+      <div class="register-card">
+        <h2 class="register-title">Create a New Account</h2>
+        <% if (error) { %>
+        <div style="color: red"><%= error %></div>
+        <% } %>
+        <form action="/register" method="POST" class="register-form">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Create a password"
+              required
+            />
+          </div>
+
+          <button type="submit" class="register-btn">Sign Up</button>
+        </form>
+        <p class="login-link">
+          Already have an account? <a href="/login">Login here</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

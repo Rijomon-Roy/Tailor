@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Remix Icon CDN for icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fb;
+      }
+
+      .container {
+        display: flex;
+        height: calc(100vh - 60px);
+        /* margin-top: 2rem; */
+      }
+
+      .sidebar {
+        width: 220px;
+        background-color: white;
+        border-right: 1px solid #e5e7eb;
+        padding: 20px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 10px 25px;
+        text-decoration: none;
+        color: #374151;
+        font-size: 15px;
+        transition: background 0.2s ease;
+      }
+
+      .sidebar a:hover {
+        background-color: #f1f5f9;
+      }
+
+      .sidebar i {
+        font-size: 18px;
+        margin-right: 12px;
+      }
+
+      .content {
+        flex-grow: 1;
+        padding: 30px;
+      }
+
+      .card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .card h2 {
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
+
+      .card p {
+        font-size: 14px;
+        color: #6b7280;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include("../partials/adminNavbar") %>
+    <!-- Main Section -->
+    <div class="container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <a href="/admin/appointmentDashboard">
+          <i class="ri-calendar-line"></i>Appointments
+        </a>
+
+        <a href="/admin/womencollection"
+          ><i class="ri-user-line"></i>Women Collection</a
+        >
+        <a href="/admin/kids"
+          ><i class="ri-shopping-bag-3-line"></i>Kids Collection</a
+        >
+      </div>
+
+      <!-- Content Area -->
+      <div class="content">
+        <div class="card">
+          <h2>Welcome to Your Dashboard</h2>
+          <p>Select a menu item from the sidebar to get started.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
