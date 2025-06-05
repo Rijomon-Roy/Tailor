@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Cart - Elite Tailoring</title>
+    <link rel="stylesheet" href="/stylesheets/cart.css" />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <!-- Include your navbar here (same as women.ejs) -->
+
+    <main class="flex-grow container mx-auto px-4 py-12">
+      <h1 class="text-3xl font-bold mb-8">Your Shopping Cart</h1>
+
+      <% if (cart && cart.items.length > 0) { %>
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="grid grid-cols-12 gap-4 p-4 font-semibold border-b">
+          <div class="col-span-6">Product</div>
+          <div class="col-span-2 text-center">Price</div>
+          <div class="col-span-2 text-center">Quantity</div>
+          <div class="col-span-2 text-center">Total</div>
+        </div>
+
+        <% cart.items.forEach(item => { %>
+        <div class="grid grid-cols-12 gap-4 p-4 border-b items-center">
+          <div class="col-span-6 flex items-center">
+            <img
+              src="<%= item.product.imageUrl %>"
+              alt="<%= item.product.name %>"
+              class="w-20 h-20 object-cover rounded mr-4"
+            />
+            <div>
+              <h3 class="font-medium"><%= item.product.name %></h3>
+              <p class="text-gray-600 text-sm">
+                <%= item.product.description.substring(0, 50) %>...
+              </p>
+            </div>
+          </div>
+          <div class="col-span-2 text-center">₹<%= item.product.price %></div>
+          <div class="col-span-2 text-center">
+            <div class="flex items-center justify-center">
+              <button class="px-2 py-1 bg-gray-200 rounded-l">-</button>
+              <span class="px-4 py-1 border-t border-b"
+                ><%= item.quantity %></span
+              >
+              <button class="px-2 py-1 bg-gray-200 rounded-r">+</button>
+            </div>
+          </div>
+          <div class="col-span-2 text-center">
+            ₹<%= item.product.price * item.quantity %>
+          </div>
+        </div>
+        <% }) %>
+
+        <div class="p-4 flex justify-between items-center">
+          <div class="text-xl font-semibold">
+            Total: ₹<%= cart.items.reduce((total, item) => total +
+            (item.product.price * item.quantity), 0) %>
+          </div>
+          <button
+            class="px-6 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
+          >
+            Proceed to Checkout
+          </button>
+        </div>
+      </div>
+      <% } else { %>
+      <div class="text-center py-12">
+        <h2 class="text-2xl font-medium mb-4">Your cart is empty</h2>
+        <p class="text-gray-600 mb-6">
+          Looks like you haven't added anything to your cart yet
+        </p>
+        <a
+          href="/womencollection"
+          class="px-6 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
+        >
+          Continue Shopping
+        </a>
+      </div>
+      <% } %>
+    </main>
+
+    <!-- Include your footer here (same as women.ejs) -->
+  </body>
+</html>

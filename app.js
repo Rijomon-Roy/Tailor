@@ -7,6 +7,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const fs = require("fs");
+const flash = require("connect-flash");
 
 const uploadDir = path.join(__dirname, "public/uploads");
 
@@ -29,6 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
+app.use(flash());
 
 // Create upload directory if it doesn't exist
 if (!fs.existsSync(uploadDir)) {
@@ -67,6 +69,12 @@ app.use(function (err, req, res, next) {
   res.locals.error = req.app.get("env") === "development" ? err : {};
   res.status(err.status || 500);
   res.render("error");
+});
+
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
 });
 
 module.exports = app;

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %> - Women's Collection</title>
+
     <link rel="stylesheet" href="/stylesheets/women.css" />
     <!-- Google Fonts -->
     <link
@@ -365,7 +366,18 @@
         <li><a href="/contact">Contact</a></li>
         <% if (currentUser) { %>
         <!-- Show cart and dropdown if logged in -->
-        <li><a href="/cart">Cart</a></li>
+        <li>
+          <a href="/cart" class="flex items-center">
+            Cart <% if (currentUser) { %>
+            <span
+              id="cart-count"
+              class="ml-1 bg-gray-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+            >
+              <%= cartItemCount || 0 %>
+            </span>
+            <% } %>
+          </a>
+        </li>
 
         <% } else { %>
         <!-- Show login button if NOT logged in -->
@@ -426,15 +438,15 @@
               <div class="flex items-center justify-between mt-4">
                 <span class="font-semibold">₹<%= product.price %></span>
 
-                <form action="/cart/add" method="POST">
+                <form action="/cart/add" method="POST" class="add-to-cart-form">
                   <input
                     type="hidden"
                     name="productId"
                     value="<%= product._id %>"
                   />
                   <button
-                    type="submit"
-                    class="px-4 py-2 bg-gray-800 text-white text-sm rounded hover:bg-gray-700 transition-colors"
+                    class="add-to-cart-btn"
+                    data-product-id="<%= product._id %>"
                   >
                     Add to Cart
                   </button>
@@ -453,113 +465,40 @@
         <p>© 2025 Elite Tailoring | All Rights Reserved</p>
       </div>
     </footer>
-    <!-- <script src="/javascripts/searchbar.js"></script> -->
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const searchInput = document.getElementById("search-input");
-        const searchResults = document.getElementById("search-results");
-        const searchContainer = document.getElementById("search-container"); // Fixed: Added this line
+      document.querySelectorAll(".add-to-cart-btn").forEach((button) => {
+        button.addEventListener("click", async (e) => {
+          e.preventDefault();
 
-        // Simple mock data - REPLACE THIS WITH REAL API CALLS
-        const mockProducts = [
-          {
-            id: 1,
-            name: "Men's Tailored Suit",
-            price: 299.99,
-            image: "/images/suit.jpg",
-          },
-          {
-            id: 2,
-            name: "Women's Formal Dress",
-            price: 199.99,
-            image: "/images/dress.jpg",
-          },
-          {
-            id: 3,
-            name: "Custom Shirt",
-            price: 89.99,
-            image: "/images/shirt.jpg",
-          },
-        ];
-
-        function debounce(func, wait) {
-          let timeout;
-          return function (...args) {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(this, args), wait);
-          };
-        }
-
-        // Mock search function - REPLACE WITH REAL API CALL
-        const mockSearch = (query) => {
-          return new Promise((resolve) => {
-            setTimeout(() => {
-              const results = mockProducts.filter((product) =>
-                product.name.toLowerCase().includes(query.toLowerCase())
-              );
-              resolve(results);
-            }, 300);
-          });
-        };
-
-        const fetchResults = debounce(async (query) => {
-          if (query.length < 2) {
-            searchResults.style.display = "none";
-            return;
-          }
+          const productId = button.dataset.productId;
 
           try {
-            // TEMPORARY: Using mock data - replace with real API call
-            const products = await mockSearch(query);
-            // For real implementation, use:
-            // const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
-            // const products = await response.json();
+            const response = await fetch("/cart/add", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json", // triggers JSON response on server
+              },
+              body: JSON.stringify({ productId }),
+            });
 
-            if (products.length > 0) {
-              searchResults.innerHTML = products
-                .map(
-                  (product) => `
-          <div class="product-card" onclick="window.location.href='/products/${
-            product.id
-          }'">
-            <img src="${product.image || "/images/placeholder.jpg"}" alt="${
-                    product.name
-                  }">
-            <div class="product-info">
-              <div class="product-name">${product.name}</div>
-              <div class="product-price">$${product.price.toFixed(2)}</div>
-            </div>
-          </div>
-        `
-                )
-                .join("");
-              searchResults.style.display = "block";
+            const result = await response.json();
+
+            if (result.success) {
+              button.textContent = "Added to Cart";
+              button.disabled = true;
+              button.classList.remove("bg-gray-800", "hover:bg-gray-700");
+              button.classList.add(
+                "bg-green-600",
+                "hover:bg-green-700",
+                "text-white"
+              );
             } else {
-              searchResults.innerHTML =
-                '<div class="no-results">No products found</div>';
-              searchResults.style.display = "block";
+              alert(result.message || "Something went wrong");
             }
-          } catch (error) {
-            console.error("Search error:", error);
-            searchResults.innerHTML =
-              '<div class="no-results">Error loading results</div>';
-            searchResults.style.display = "block";
-          }
-        }, 300);
-
-        searchInput.addEventListener("input", (e) => {
-          fetchResults(e.target.value.trim());
-        });
-
-        document.addEventListener("click", (e) => {
-          if (!searchContainer.contains(e.target)) {
-            searchResults.style.display = "none";
-          }
-        });
-
-        searchInput.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") {
-            searchResults.style.display = "none";
+          } catch (err) {
+            console.error("Add to cart error:", err);
+            alert("Failed to add item to cart.");
           }
         });
       });

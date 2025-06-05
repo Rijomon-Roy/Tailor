@@ -3,6 +3,7 @@ var router = express.Router();
 const users = require("../models/users");
 const bcrypt = require("bcrypt");
 const Women = require("../models/women");
+const Cart = require("../models/Cart");
 
 /* GET home page */
 router.get("/", (req, res) => {
@@ -103,19 +104,141 @@ router.get("/appointment", (req, res) => {
 router.get("/login", (req, res) => {
   res.render("authentication/login", { title: "Login Page", error: null });
 });
+
 //Women collection
+
+// router.get("/womencollection", async (req, res) => {
+//   try {
+//     const products = await Women.find();
+//     res.render("women", {
+//       title: "Women's Collection",
+//       products,
+//       currentUser: req.session.user || null,
+//     }); // <== changed to "women"
+//   } catch (error) {
+//     console.error("Error fetching women's collection:", error.message);
+//     res.status(500).send("Server Error");
+//   }
+// });
 
 router.get("/womencollection", async (req, res) => {
   try {
     const products = await Women.find();
+    let cartItemCount = 0;
+
+    if (req.session.user) {
+      const cart = await Cart.findOne({ user: req.session.user.id });
+      cartItemCount = cart
+        ? cart.items.reduce((total, item) => total + item.quantity, 0)
+        : 0;
+    }
+
     res.render("women", {
       title: "Women's Collection",
       products,
       currentUser: req.session.user || null,
-    }); // <== changed to "women"
+      cartItemCount,
+    });
   } catch (error) {
     console.error("Error fetching women's collection:", error.message);
     res.status(500).send("Server Error");
+  }
+});
+
+// Add to cart route
+// routes/users.js
+router.get("/cart", async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  }
+
+  try {
+    const cart = await Cart.findOne({ user: req.session.user.id }).populate({
+      path: "items.product",
+      model: "women",
+    });
+
+    // Calculate total price
+    let totalPrice = 0;
+    if (cart) {
+      totalPrice = cart.items.reduce((total, item) => {
+        return total + item.product.price * item.quantity;
+      }, 0);
+    }
+
+    res.render("cart", {
+      title: "Your Cart",
+      currentUser: req.session.user,
+      cart: cart || { items: [] },
+      totalPrice,
+    });
+  } catch (err) {
+    console.error("Error fetching cart:", err);
+    res.status(500).render("error", {
+      message: "Failed to load cart",
+      error: err,
+      currentUser: req.session.user || null,
+    });
+  }
+});
+router.post("/cart/add", async (req, res) => {
+  const isAjax =
+    req.xhr ||
+    req.headers.accept?.includes("json") ||
+    req.headers["content-type"]?.includes("application/x-www-form-urlencoded");
+
+  if (!req.session.user) {
+    if (isAjax) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Please login first" });
+    }
+    return res.redirect("/login");
+  }
+
+  try {
+    const { productId } = req.body;
+    const userId = req.session.user.id;
+
+    // Find the user's cart or create a new one
+    let cart = await Cart.findOne({ user: userId });
+    if (!cart) {
+      cart = new Cart({ user: userId, items: [] });
+    }
+
+    // Check if product already exists in cart
+    const existingItemIndex = cart.items.findIndex(
+      (item) => item.product.toString() === productId
+    );
+
+    if (existingItemIndex > -1) {
+      // Product exists, increment quantity
+      cart.items[existingItemIndex].quantity += 1;
+    } else {
+      // Add new product to cart with quantity 1
+      cart.items.push({ product: productId, quantity: 1 });
+    }
+
+    await cart.save();
+
+    if (isAjax) {
+      return res.json({
+        success: true,
+        message: "Product added to cart",
+        cart,
+      });
+    }
+
+    // Redirect to cart page or back to products page
+    res.redirect("/cart");
+  } catch (error) {
+    console.error("Error adding to cart:", error);
+    if (isAjax) {
+      return res
+        .status(500)
+        .json({ success: false, message: "Failed to add to cart" });
+    }
+    res.status(500).send("Server error");
   }
 });
 

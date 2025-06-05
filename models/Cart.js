@@ -2,6 +2,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// models/Cart.js
 const CartSchema = new Schema(
   {
     user: {
@@ -14,7 +15,7 @@ const CartSchema = new Schema(
       {
         product: {
           type: Schema.Types.ObjectId,
-          ref: "Product",
+          ref: "women", // Changed from "Product" to "women"
           required: true,
         },
         quantity: { type: Number, default: 1 },

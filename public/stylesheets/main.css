@@ -154,3 +154,9 @@ nav.navbar {
     font-size: 0.9rem;
   }
 }
+button[disabled] {
+  opacity: 1 !important;
+  color: white !important;
+  background-color: #16a34a !important; /* green-600 */
+  cursor: default !important;
+}
