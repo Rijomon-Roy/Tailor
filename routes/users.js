@@ -125,12 +125,18 @@ router.get("/womencollection", async (req, res) => {
   try {
     const products = await Women.find();
     let cartItemCount = 0;
+    let cartProductIds = [];
 
     if (req.session.user) {
       const cart = await Cart.findOne({ user: req.session.user.id });
-      cartItemCount = cart
-        ? cart.items.reduce((total, item) => total + item.quantity, 0)
-        : 0;
+
+      if (cart) {
+        cartItemCount = cart.items.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
+        cartProductIds = cart.items.map((item) => item.product.toString());
+      }
     }
 
     res.render("women", {
@@ -138,6 +144,7 @@ router.get("/womencollection", async (req, res) => {
       products,
       currentUser: req.session.user || null,
       cartItemCount,
+      cartProductIds, // <-- Pass product IDs already in cart
     });
   } catch (error) {
     console.error("Error fetching women's collection:", error.message);
@@ -239,6 +246,98 @@ router.post("/cart/add", async (req, res) => {
         .json({ success: false, message: "Failed to add to cart" });
     }
     res.status(500).send("Server error");
+  }
+});
+// Add this route to your user.js router file
+router.post("/cart/remove", async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/login"); // Redirect to login if not authenticated
+  }
+
+  try {
+    const { productId } = req.body;
+    const userId = req.session.user.id;
+
+    const cart = await Cart.findOne({ user: userId });
+    if (!cart) {
+      return res.redirect("/cart"); // Redirect to cart page even if cart not found
+    }
+
+    // Remove the item from the cart
+    cart.items = cart.items.filter(
+      (item) => item.product.toString() !== productId
+    );
+    await cart.save();
+
+    res.redirect("/cart"); // Redirect back to cart page after successful removal
+  } catch (error) {
+    console.error("Error removing from cart:", error);
+    res.redirect("/cart"); // Redirect to cart page even if error occurs
+  }
+});
+
+router.post("/cart/update", async (req, res) => {
+  if (!req.session.user) {
+    return res
+      .status(401)
+      .json({ success: false, message: "Please login first" });
+  }
+
+  try {
+    const { productId, action } = req.body;
+    const userId = req.session.user.id;
+
+    let cart = await Cart.findOne({ user: userId }).populate("items.product");
+    if (!cart) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Cart not found" });
+    }
+
+    // Find the item in the cart
+    const itemIndex = cart.items.findIndex(
+      (item) => item.product._id.toString() === productId
+    );
+
+    if (itemIndex === -1) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Item not found in cart" });
+    }
+
+    // Update quantity based on action
+    if (action === "increase") {
+      cart.items[itemIndex].quantity += 1;
+    } else if (action === "decrease") {
+      cart.items[itemIndex].quantity = Math.max(
+        1,
+        cart.items[itemIndex].quantity - 1
+      );
+    }
+
+    await cart.save();
+
+    // Calculate updated values
+    const cartItemCount = cart.items.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
+    const totalPrice = cart.items.reduce(
+      (total, item) => total + item.product.price * item.quantity,
+      0
+    );
+
+    res.json({
+      success: true,
+      message: "Quantity updated",
+      cartItemCount,
+      totalPrice,
+    });
+  } catch (error) {
+    console.error("Error updating quantity:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to update quantity" });
   }
 });
 

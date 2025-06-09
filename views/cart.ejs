@@ -4,82 +4,460 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Your Cart - Elite Tailoring</title>
-    <link rel="stylesheet" href="/stylesheets/cart.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Arial", sans-serif;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eaeaea;
+      }
+
+      .header h1 {
+        font-size: 28px;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      .continue-shopping {
+        color: #7f8c8d;
+        text-decoration: none;
+        font-size: 15px;
+        transition: color 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .continue-shopping:hover {
+        color: #3498db;
+      }
+
+      .cart-container {
+        display: flex;
+        gap: 30px;
+        align-items: flex-start;
+      }
+
+      .cart-items {
+        flex: 2;
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .cart-item {
+        display: flex;
+        gap: 20px;
+        padding: 20px 0;
+        border-bottom: 1px solid #f1f1f1;
+      }
+
+      .cart-item:last-child {
+        border-bottom: none;
+      }
+
+      .item-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 6px;
+        border: 1px solid #f1f1f1;
+      }
+
+      .item-details {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .item-title {
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #2c3e50;
+        font-size: 16px;
+      }
+
+      .item-price {
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 10px;
+        font-size: 16px;
+      }
+
+      .item-description {
+        color: #7f8c8d;
+        font-size: 14px;
+        margin-bottom: 15px;
+        line-height: 1.5;
+      }
+
+      .item-actions {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .action-btn {
+        background: none;
+        border: none;
+        color: #7f8c8d;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: color 0.3s;
+      }
+
+      .action-btn:hover {
+        color: #3498db;
+      }
+
+      .quantity-control {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      .quantity-btn {
+        width: 30px;
+        height: 30px;
+        border: 1px solid #ddd;
+        background: #f8f9fa;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+
+      .quantity-btn:hover {
+        background: #e9ecef;
+        border-color: #ced4da;
+      }
+
+      .quantity-value {
+        min-width: 36px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 15px;
+      }
+
+      .order-summary {
+        flex: 1;
+        background: white;
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 20px;
+      }
+
+      .order-summary h2 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 25px;
+        color: #2c3e50;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #f1f1f1;
+      }
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        font-size: 15px;
+        color: #34495e;
+      }
+
+      .summary-total {
+        border-top: 1px solid #f1f1f1;
+        padding-top: 15px;
+        margin-top: 15px;
+        font-weight: 700;
+        color: #2c3e50;
+        font-size: 16px;
+      }
+
+      .checkout-btn {
+        width: 100%;
+        background: #27ae60;
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 6px;
+        font-weight: 600;
+        margin-top: 25px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background 0.3s;
+        text-decoration: none;
+      }
+
+      .checkout-btn:hover {
+        background: #219653;
+      }
+
+      .secure-payment {
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+        font-size: 13px;
+        color: #7f8c8d;
+        line-height: 1.5;
+      }
+
+      .secure-payment input {
+        margin-right: 10px;
+        accent-color: #27ae60;
+      }
+
+      .empty-cart {
+        text-align: center;
+        background: white;
+        padding: 60px 40px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .empty-cart h2 {
+        font-size: 24px;
+        margin-bottom: 15px;
+        color: #2c3e50;
+      }
+
+      .empty-cart p {
+        color: #7f8c8d;
+        margin-bottom: 30px;
+        font-size: 16px;
+      }
+
+      .shop-btn {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 15px;
+        transition: background 0.3s;
+      }
+
+      .shop-btn:hover {
+        background: #2980b9;
+      }
+
+      .remove-btn {
+        background: none;
+        border: none;
+        color: #e74c3c;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 10px;
+        border-radius: 4px;
+        transition: all 0.3s;
+      }
+
+      .remove-btn:hover {
+        background-color: rgba(231, 76, 60, 0.1);
+      }
+
+      .remove-btn svg {
+        margin-right: 5px;
+        width: 16px;
+        height: 16px;
+      }
+
+      @media (max-width: 768px) {
+        .cart-container {
+          flex-direction: column;
+        }
+
+        .header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+
+        .item-image {
+          width: 80px;
+          height: 80px;
+        }
+      }
+    </style>
   </head>
-  <body class="min-h-screen flex flex-col">
-    <!-- Include your navbar here (same as women.ejs) -->
-
-    <main class="flex-grow container mx-auto px-4 py-12">
-      <h1 class="text-3xl font-bold mb-8">Your Shopping Cart</h1>
-
-      <% if (cart && cart.items.length > 0) { %>
-      <div class="bg-white rounded-lg shadow-md overflow-hidden">
-        <div class="grid grid-cols-12 gap-4 p-4 font-semibold border-b">
-          <div class="col-span-6">Product</div>
-          <div class="col-span-2 text-center">Price</div>
-          <div class="col-span-2 text-center">Quantity</div>
-          <div class="col-span-2 text-center">Total</div>
-        </div>
-
-        <% cart.items.forEach(item => { %>
-        <div class="grid grid-cols-12 gap-4 p-4 border-b items-center">
-          <div class="col-span-6 flex items-center">
-            <img
-              src="<%= item.product.imageUrl %>"
-              alt="<%= item.product.name %>"
-              class="w-20 h-20 object-cover rounded mr-4"
-            />
-            <div>
-              <h3 class="font-medium"><%= item.product.name %></h3>
-              <p class="text-gray-600 text-sm">
-                <%= item.product.description.substring(0, 50) %>...
-              </p>
-            </div>
-          </div>
-          <div class="col-span-2 text-center">₹<%= item.product.price %></div>
-          <div class="col-span-2 text-center">
-            <div class="flex items-center justify-center">
-              <button class="px-2 py-1 bg-gray-200 rounded-l">-</button>
-              <span class="px-4 py-1 border-t border-b"
-                ><%= item.quantity %></span
-              >
-              <button class="px-2 py-1 bg-gray-200 rounded-r">+</button>
-            </div>
-          </div>
-          <div class="col-span-2 text-center">
-            ₹<%= item.product.price * item.quantity %>
-          </div>
-        </div>
-        <% }) %>
-
-        <div class="p-4 flex justify-between items-center">
-          <div class="text-xl font-semibold">
-            Total: ₹<%= cart.items.reduce((total, item) => total +
-            (item.product.price * item.quantity), 0) %>
-          </div>
-          <button
-            class="px-6 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
+  <body>
+    <!-- Include navbar -->
+    <%- include("partials/navbar") %>
+    <div class="container">
+      <div class="header">
+        <h1>Your Shopping Cart (<%= cart ? cart.items.length : 0 %>)</h1>
+        <a href="/" class="continue-shopping">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            viewBox="0 0 16 16"
           >
-            Proceed to Checkout
-          </button>
-        </div>
-      </div>
-      <% } else { %>
-      <div class="text-center py-12">
-        <h2 class="text-2xl font-medium mb-4">Your cart is empty</h2>
-        <p class="text-gray-600 mb-6">
-          Looks like you haven't added anything to your cart yet
-        </p>
-        <a
-          href="/womencollection"
-          class="px-6 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
-        >
+            <path
+              fill-rule="evenodd"
+              d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+            />
+          </svg>
           Continue Shopping
         </a>
       </div>
-      <% } %>
-    </main>
 
-    <!-- Include your footer here (same as women.ejs) -->
+      <% if (cart && cart.items.length > 0) { %>
+      <div class="cart-container">
+        <div class="cart-items">
+          <% cart.items.forEach(item => { %>
+          <div class="cart-item">
+            <img
+              src="<%= item.product.imageUrl %>"
+              alt="<%= item.product.name %>"
+              class="item-image"
+            />
+            <div class="item-details">
+              <div>
+                <div class="item-title"><%= item.product.name %></div>
+                <div class="item-price">
+                  ₹<%= item.product.price.toFixed(2) %>
+                </div>
+                <div class="item-description">
+                  <%= item.product.description.substring(0, 60) %>...
+                </div>
+              </div>
+
+              <div>
+                <div class="quantity-control">
+                  <button
+                    class="quantity-btn decrease-btn"
+                    data-product-id="<%= item.product._id %>"
+                  >
+                    -
+                  </button>
+                  <span
+                    class="quantity-value"
+                    id="quantity-<%= item.product._id %>"
+                  >
+                    <%= item.quantity %>
+                  </span>
+                  <button
+                    class="quantity-btn increase-btn"
+                    data-product-id="<%= item.product._id %>"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <div class="item-actions">
+                  <button
+                    class="remove-btn"
+                    onclick="removeFromCart('<%= item.product._id %>')"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                      />
+                    </svg>
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+
+        <div class="order-summary">
+          <h2>Order Summary</h2>
+          <div class="summary-row">
+            <span
+              >Subtotal (<%= cart.items.reduce((total, item) => total +
+              item.quantity, 0) %> items)</span
+            >
+            <span
+              >₹<%= cart.items.reduce((total, item) => total +
+              (item.product.price * item.quantity), 0).toFixed(2) %></span
+            >
+          </div>
+          <div class="summary-row">
+            <span>Discount</span>
+            <span>-₹0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Delivery</span>
+            <span>FREE</span>
+          </div>
+          <div class="summary-row summary-total">
+            <span>Total</span>
+            <span
+              >₹<%= cart.items.reduce((total, item) => total +
+              (item.product.price * item.quantity), 0).toFixed(2) %></span
+            >
+          </div>
+          <a href="/checkout" class="checkout-btn">Proceed to Checkout</a>
+          <div class="secure-payment">
+            <input type="checkbox" checked />
+            <span
+              >Safe and Secure Payments. Easy returns. 100% Authentic
+              products.</span
+            >
+          </div>
+        </div>
+      </div>
+      <% } else { %>
+      <div class="empty-cart">
+        <h2>Your cart is empty</h2>
+        <p>Looks like you haven't added anything to your cart yet.</p>
+        <a href="/womencollection" class="shop-btn">Continue Shopping</a>
+      </div>
+      <% } %>
+    </div>
+    <script src="/javascripts/cart.js"></script>
   </body>
 </html>
