@@ -256,6 +256,11 @@
         gap: 0.5rem;
         transition: background-color 0.3s ease;
       }
+      .block{
+        text-decoration: none;
+        color: inherit;
+      }
+
 
       .add-to-cart-btn i {
         font-size: 1rem;
@@ -458,9 +463,12 @@
           class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
         >
           <% products.forEach(product => { %>
+             
           <div
             class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 product-card"
           >
+           <a href="/womencollection/<%= product._id %>" class="block">
+         
             <!-- Product Image -->
             <div class="aspect-square overflow-hidden">
               <img
@@ -473,12 +481,14 @@
             <!-- Product Info -->
             <div class="p-4 product-content">
               <h3 class="font-medium text-lg mb-1"><%= product.name %></h3>
-              <p class="text-gray-600 text-sm line-clamp-2">
+              <!-- <p class="text-gray-600 text-sm line-clamp-2">
                 <%= product.description %>
-              </p>
+              </p> -->
+              </a>
 
               <div class="flex items-center justify-between mt-4">
                 <span class="font-semibold">₹<%= product.price %></span>
+                
 
                 <form action="/cart/add" method="POST" class="add-to-cart-form">
   <input

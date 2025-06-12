@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= product.name %> - Elite Tailoring</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        :root {
+            --primary: #111;
+            --secondary: #666;
+            --accent: #6b46c1;
+            --light: #f8f9fa;
+            --border: #e5e5e5;
+        }
+
+       body {
+    font-family: 'Inter', sans-serif;
+    color: var(--primary);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px; /* Increased side padding */
+    width: 100%;
+    flex: 1;
+}
+        /* Product Detail Section */
+        .product-detail {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            padding: 40px 0;
+        }
+
+        @media (min-width: 992px) {
+            .product-detail {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .product-gallery {
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 80vh;
+            object-fit: contain;
+            background-color: var(--light);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .product-info {
+            padding: 0 20px;
+        }
+
+        .product-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .product-subtitle {
+            font-size: 16px;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+
+        .product-price {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .tax-info {
+            font-size: 14px;
+            color: var(--secondary);
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .size-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .size-guide {
+            font-size: 14px;
+            color: var(--secondary);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .size-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .size-option {
+            border: 1px solid var(--border);
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .size-option:hover {
+            border-color: var(--primary);
+        }
+
+        .size-option.selected {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .add-to-cart {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            flex-grow: 1;
+            transition: background-color 0.2s;
+        }
+
+        .add-to-cart:hover {
+            background-color: #553c9a;
+        }
+
+        .add-to-cart.added {
+            background-color: #4CAF50;
+            cursor: not-allowed;
+        }
+
+        .buy-now {
+            background-color: white;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 14px 30px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .buy-now:hover {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .product-description {
+            font-size: 15px;
+            color: var(--secondary);
+            line-height: 1.7;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            color: var(--secondary);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-close {
+            margin-top: 20px;
+            padding: 8px 20px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .add-to-cart.added {
+            background-color: #4CAF50;
+            cursor: not-allowed;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .modal-close {
+            margin-top: 20px;
+            padding: 8px 20px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .buy-now{
+          text-decoration: none;
+        }
+   .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0; /* Add this */
+    bottom: 0; /* Add this */
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto; /* Center the modal */
+}
+/* Add this to your styles */
+.navbar {
+    width: 100%;
+    max-width: 1555px;
+    margin: 0 auto;
+    padding: 0 40px; /* Match container padding */
+    box-sizing: border-box;
+}
+    </style>
+</head>
+<body>
+  <div class="navbar">
+    <%- include("partials/navbar") %>
+    </div>
+
+    <div class="container">
+        <main class="product-detail">
+            <div class="product-gallery">
+                <a href="/womencollection" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Back to Collection
+                </a>
+                <img src="<%= product.imageUrl %>" alt="<%= product.name %>" class="main-image">
+            </div>
+
+            <div class="product-info">
+                <h1 class="product-title"><%= product.name %></h1>
+                <p class="product-subtitle"><%= product.category || 'Premium Collection' %></p>
+                
+                <div class="product-price">₹<%= product.price %></div>
+                
+                <p class="tax-info">Inclusive of all taxes<br>(Elite Tailoring includes all applicable duties)</p>
+                
+                <div class="size-section">
+                    <div class="section-title">
+                        Select Size
+                        <span class="size-guide">Size Guide</span>
+                    </div>
+                    <div class="size-options">
+                        <div class="size-option">XS</div>
+                        <div class="size-option selected">S</div>
+                        <div class="size-option">M</div>
+                        <div class="size-option">L</div>
+                        <div class="size-option">XL</div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button 
+                        class="add-to-cart <%= isInCart ? 'added' : '' %>"
+                        <%= isInCart ? 'disabled' : '' %>
+                    >
+                        <%= isInCart ? 'Added to Cart' : 'Add to Cart' %>
+                    </button>
+                    <a href="/cart" class="buy-now">Buy Now</a>
+                </div>
+                
+                <p class="product-description">
+                    <%= product.description || "Premium quality product designed for comfort and style." %>
+                </p>
+            </div>
+        </main>
+    </div>
+
+  <!-- Already Added Modal -->
+<div id="alreadyAddedModal" class="modal">
+    <div class="modal-content">
+        <h3>This item is already in your cart</h3>
+        <p>You can view or edit your cart items from the cart page.</p>
+        <button class="modal-close">OK</button>
+    </div>
+</div>
+   
+
+     <script>
+    // Add to cart functionality with complete error handling
+    document.querySelector('.add-to-cart').addEventListener('click', async function(e) {
+        e.preventDefault();
+        
+        const button = this;
+        
+        // Check if already added FIRST
+        if (button.classList.contains('added') || button.textContent.trim() === 'Added to Cart') {
+            document.getElementById('alreadyAddedModal').style.display = 'flex';
+            return;
+        }
+        
+        // Disable button during request to prevent double clicks
+        button.disabled = true;
+        const originalText = button.textContent;
+        button.textContent = 'Adding...';
+        
+        try {
+            const productId = '<%= product._id %>';
+            const selectedSize = document.querySelector('.size-option.selected').textContent;
+            
+            const response = await fetch('/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    productId,
+                    size: selectedSize
+                })
+            });
+            
+            // Handle response
+            let result;
+            try {
+                result = await response.json();
+            } catch (jsonError) {
+                // If JSON parsing fails but status is OK, assume success
+                if (response.ok) {
+                    result = { success: true };
+                } else {
+                    throw new Error('Failed to add to cart');
+                }
+            }
+            
+            if (result.success) {
+                // Success state
+                button.textContent = 'Added to Cart';
+                button.classList.add('added');
+                
+                // Update cart count
+                const cartCount = document.getElementById('cart-count');
+                if (cartCount) {
+                    const currentCount = parseInt(cartCount.textContent) || 0;
+                    cartCount.textContent = currentCount + 1;
+                }
+            } else {
+                // Failure state
+                button.textContent = originalText;
+                button.disabled = false;
+                alert(result.message || 'Failed to add to cart');
+            }
+        } catch (error) {
+            console.error('Add to cart error:', error);
+            button.textContent = originalText;
+            button.disabled = false;
+            alert('Failed to add to cart. Please try again.');
+        }
+    });
+
+    // Modal handling - MAKE SURE THESE ARE PRESENT
+    document.querySelector('.modal-close').addEventListener('click', function() {
+        document.getElementById('alreadyAddedModal').style.display = 'none';
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target === document.getElementById('alreadyAddedModal')) {
+            document.getElementById('alreadyAddedModal').style.display = 'none';
+        }
+    });
+</script>
+</body>
+</html>

@@ -105,22 +105,6 @@ router.get("/login", (req, res) => {
   res.render("authentication/login", { title: "Login Page", error: null });
 });
 
-//Women collection
-
-// router.get("/womencollection", async (req, res) => {
-//   try {
-//     const products = await Women.find();
-//     res.render("women", {
-//       title: "Women's Collection",
-//       products,
-//       currentUser: req.session.user || null,
-//     }); // <== changed to "women"
-//   } catch (error) {
-//     console.error("Error fetching women's collection:", error.message);
-//     res.status(500).send("Server Error");
-//   }
-// });
-
 router.get("/womencollection", async (req, res) => {
   try {
     const products = await Women.find();
@@ -152,6 +136,44 @@ router.get("/womencollection", async (req, res) => {
   }
 });
 
+//product detail page
+router.get("/womencollection/:id", async (req, res) => {
+  try {
+    const product = await Women.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).send("Product not found");
+    }
+
+    let cartItemCount = 0;
+    let isInCart = false;
+
+    if (req.session.user) {
+      const cart = await Cart.findOne({ user: req.session.user.id });
+
+      if (cart) {
+        cartItemCount = cart.items.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
+        isInCart = cart.items.some(
+          (item) => item.product.toString() === req.params.id
+        );
+      }
+    }
+
+    res.render("product-details", {
+      title: product.name,
+      product,
+      currentUser: req.session.user || null,
+      cartItemCount,
+      isInCart,
+    });
+  } catch (error) {
+    console.error("Error fetching product details:", error.message);
+    res.status(500).send("Server Error");
+  }
+});
 // Add to cart route
 // routes/users.js
 router.get("/cart", async (req, res) => {
