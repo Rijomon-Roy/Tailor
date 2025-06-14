@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - Elite Tailoring</title>
+    <link rel="stylesheet" href="/stylesheets/main.css" />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f7f7f7;
+        padding-top: 80px; /* to handle navbar height */
+      }
+
+      .about-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .top-bar {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 30px;
+      }
+
+      .continue-shopping {
+        display: flex;
+        align-items: center;
+        background-color: #ff9800;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.3s;
+      }
+
+      .continue-shopping svg {
+        margin-right: 8px;
+      }
+
+      .continue-shopping:hover {
+        background-color: #e68900;
+      }
+
+      .section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 60px;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .section img {
+        width: 100%;
+        max-width: 500px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .section-content {
+        flex: 1;
+        padding: 20px;
+        min-width: 300px;
+      }
+
+      .section-content h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      .section-content p {
+        font-size: 1.1rem;
+        color: #555;
+        line-height: 1.6;
+      }
+
+      .mission {
+        text-align: center;
+        padding: 50px 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+      }
+
+      .mission h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      .mission p {
+        font-size: 1.1rem;
+        color: #555;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 768px) {
+        .section {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .section img {
+          max-width: 100%;
+        }
+
+        .section-content {
+          padding: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <%- include("partials/navbar") %>
+
+    <div class="about-container">
+      <div class="top-bar">
+        <a href="/womencollection" class="continue-shopping">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="white"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+            />
+          </svg>
+          Continue Shopping
+        </a>
+      </div>
+
+      <div class="section">
+        <img src="/images/about1.jpg" alt="Tailoring Excellence" />
+        <div class="section-content">
+          <h2>Our Story</h2>
+          <p>
+            Elite Tailoring has been delivering premium tailoring services for
+            years. Our passion for fashion, precision, and customer satisfaction
+            drives us to create garments that fit perfectly and make you feel
+            confident.
+          </p>
+        </div>
+      </div>
+
+      <div class="section" style="flex-direction: row-reverse">
+        <img src="/images/about2.jpg" alt="Our Craftsmanship" />
+        <div class="section-content">
+          <h2>Craftsmanship & Quality</h2>
+          <p>
+            Every stitch tells a story. Our experienced tailors use only the
+            finest fabrics and pay attention to every detail. We blend
+            traditional techniques with modern design to deliver garments you'll
+            love.
+          </p>
+        </div>
+      </div>
+
+      <div class="mission">
+        <h2>Our Mission</h2>
+        <p>
+          To offer exceptional tailoring experiences, combining quality, style,
+          and personalized service to make every customer look and feel their
+          best.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

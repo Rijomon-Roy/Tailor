@@ -4,6 +4,7 @@ const users = require("../models/users");
 const bcrypt = require("bcrypt");
 const Women = require("../models/women");
 const Cart = require("../models/Cart");
+const Order = require("../models/order");
 
 /* GET home page */
 router.get("/", (req, res) => {
@@ -103,6 +104,11 @@ router.get("/appointment", (req, res) => {
 });
 router.get("/login", (req, res) => {
   res.render("authentication/login", { title: "Login Page", error: null });
+});
+
+//About page
+router.get("/about", (req, res) => {
+  res.render("about");
 });
 
 router.get("/womencollection", async (req, res) => {
@@ -360,6 +366,123 @@ router.post("/cart/update", async (req, res) => {
     res
       .status(500)
       .json({ success: false, message: "Failed to update quantity" });
+  }
+});
+
+// this is the checkout router
+router.get("/checkout", async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  }
+
+  try {
+    const cart = await Cart.findOne({ user: req.session.user.id }).populate({
+      path: "items.product",
+      model: "women",
+    });
+
+    if (!cart || cart.items.length === 0) {
+      return res.redirect("/cart");
+    }
+
+    // Calculate total price
+    const totalPrice = cart.items.reduce((total, item) => {
+      return total + item.product.price * item.quantity;
+    }, 0);
+
+    res.render("checkout", {
+      title: "Checkout",
+      currentUser: req.session.user,
+      cart,
+      totalPrice,
+    });
+  } catch (err) {
+    console.error("Error during checkout:", err);
+    res.status(500).render("error", {
+      message: "Failed to process checkout",
+      error: err,
+      currentUser: req.session.user || null,
+    });
+  }
+});
+
+//order confirmation router
+router.get("/order-confirmation", async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  }
+
+  try {
+    // Get the user's cart
+    const cart = await Cart.findOne({ user: req.session.user.id }).populate({
+      path: "items.product",
+      model: "women",
+    });
+
+    if (!cart || cart.items.length === 0) {
+      return res.redirect("/cart");
+    }
+
+    // Calculate total price
+    const totalPrice = cart.items.reduce((total, item) => {
+      return total + item.product.price * item.quantity;
+    }, 0);
+
+    // Create a new order
+    const order = new Order({
+      user: req.session.user.id,
+      orderNumber: `ET${Math.floor(100000 + Math.random() * 900000)}`,
+      items: cart.items.map((item) => ({
+        product: item.product._id,
+        quantity: item.quantity,
+        price: item.product.price,
+      })),
+      totalAmount: totalPrice,
+      status: "Processing",
+    });
+
+    await order.save();
+
+    // Clear the cart after creating the order
+    await Cart.findByIdAndUpdate(cart._id, { $set: { items: [] } });
+
+    res.render("orderConfirmation", {
+      title: "Order Confirmation",
+      currentUser: req.session.user,
+      totalPrice: totalPrice,
+      orderNumber: order.orderNumber,
+    });
+  } catch (err) {
+    console.error("Error during order confirmation:", err);
+    res.status(500).render("error", {
+      message: "Failed to process order confirmation",
+      error: err,
+      currentUser: req.session.user || null,
+    });
+  }
+});
+router.get("/orders", async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  }
+
+  try {
+    const orders = await Order.find({ user: req.session.user.id })
+      .populate("items.product")
+      .sort({ createdAt: -1 });
+
+    res.render("orders", {
+      title: "My Orders",
+      currentUser: req.session.user,
+      orders: orders,
+    });
+  } catch (err) {
+    console.error("Error fetching orders:", err);
+    res.status(500).render("error", {
+      message: "Failed to fetch orders",
+      error: err,
+      currentUser: req.session.user || null,
+    });
   }
 });
 

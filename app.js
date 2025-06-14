@@ -14,6 +14,7 @@ const uploadDir = path.join(__dirname, "public/uploads");
 // const searchApi = require("./routes/api/searchApi");
 var adminRouter = require("./routes/admin");
 var usersRouter = require("./routes/users");
+const pdfRoutes = require("./routes/pdf");
 
 var db = require("./config/db");
 
@@ -56,6 +57,7 @@ app.use((req, res, next) => {
 
 app.use("/", usersRouter);
 app.use("/admin", adminRouter);
+app.use(pdfRoutes);
 // app.use("/api", searchApi);
 
 // catch 404 and forward to error handler
