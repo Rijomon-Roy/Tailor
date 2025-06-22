@@ -400,61 +400,44 @@
           font-size: 2.25rem;
         }
       }
+       .continue-shopping {
+        color: #7f8c8d;
+        text-decoration: none;
+        font-size: 15px;
+        transition: color 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .continue-shopping:hover {
+        color: #3498db;
+      }
+
     </style>
   </head>
   <body class="min-h-screen flex flex-col">
     <!-- Navbar -->
-    <nav class="navbar">
-      <h1 class="logo">Elite Tailoring</h1>
-      <div class="search-container" id="search-container">
-        <input
-          type="text"
-          id="search-input"
-          placeholder="Search products..."
-          autocomplete="off"
-        />
-        <div id="search-results" class="search-results"></div>
-      </div>
-      <ul class="nav-links">
-        <li><a href="/about">About</a></li>
-        <li><a href="/services">Services</a></li>
-        <li><a href="/contact">Contact</a></li>
-        <% if (currentUser) { %>
-        <!-- Show cart and dropdown if logged in -->
-        <li>
-          <a href="/cart" class="flex items-center">
-            Cart <% if (currentUser) { %>
-            <span
-              id="cart-count"
-              class="ml-1 bg-gray-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
-            >
-              <%= cartItemCount || 0 %>
-            </span>
-            <% } %>
-          </a>
-            <li><a href="/orders">Order</a></li>
-        </li>
-
-        <% } else { %>
-        <!-- Show login button if NOT logged in -->
-
-        <% } %> <% if (currentUser) { %>
-        <!-- Show dropdown if logged in -->
-        <li class="dropdown">
-          <button class="dropbtn"><%= currentUser.name %></button>
-          <div class="dropdown-content">
-            <a href="/logout">Logout</a>
-          </div>
-        </li>
-        <% } else { %>
-        <!-- Show login button if NOT logged in -->
-        <li><a href="/login" class="btn">Login</a></li>
-        <% } %>
-      </ul>
-    </nav>
-
+    <%- include("partials/navbar") %>
     <!-- Main Content -->
     <main class="flex-grow">
+    <div style="display: flex; justify-content: flex-end; padding: 10px 20px; ">
+  <a href="/" class="continue-shopping">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="currentColor"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+      />
+    </svg>
+    Home
+  </a>
+</div>
       <!-- Hero Section -->
       <!-- <section class="hero-container">
         <div class="hero-image-wrapper">

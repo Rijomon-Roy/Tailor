@@ -110,6 +110,23 @@ router.get("/login", (req, res) => {
 router.get("/about", (req, res) => {
   res.render("about");
 });
+//service page
+router.get("/services", (req, res) => {
+  res.render("services", { currentUser: req.session.user || null });
+});
+//contant page
+router.get("/contact", (req, res) => {
+  res.render("contact", { currentUser: req.session.user || null });
+});
+
+// Optional: handle form submission (dummy response)
+router.post("/contact", (req, res) => {
+  console.log("Contact form submitted:", req.body);
+  res.render("contact", {
+    currentUser: req.session.user || null,
+    successMessage: "Thank you for contacting us! We'll get back to you soon.",
+  });
+});
 
 router.get("/womencollection", async (req, res) => {
   try {

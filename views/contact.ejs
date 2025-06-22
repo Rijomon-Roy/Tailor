@@ -1,0 +1,153 @@
+<%- include("partials/navbar") %>
+
+<style>
+  .top-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 30px;
+  }
+
+  .continue-shopping {
+    display: inline-flex;
+    align-items: center;
+    background-color: #ff9800;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .continue-shopping svg {
+    margin-right: 8px;
+  }
+
+  .continue-shopping:hover {
+    background-color: #e68900;
+    text-decoration: none;
+  }
+
+  .contact-section {
+    min-height: 100vh;
+    background: linear-gradient(to right, #f3f3f3, #f9f9f9);
+  }
+
+  .form-control,
+  .form-label {
+    font-size: 15px;
+  }
+
+  .btn-warning {
+    font-weight: 600;
+    padding: 10px 30px;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+  }
+
+  .btn-warning:hover {
+    background-color: #e68a00;
+  }
+
+  .shadow-sm {
+    transition: transform 0.3s ease;
+  }
+
+  .shadow-sm:hover {
+    transform: translateY(-5px);
+  }
+
+  @media (max-width: 768px) {
+    .top-bar {
+      justify-content: center;
+    }
+  }
+</style>
+
+<section class="contact-section py-5">
+  <div class="container">
+    <div class="top-bar">
+      <a href="/" class="continue-shopping">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="white"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+          />
+        </svg>
+        Home
+      </a>
+    </div>
+
+    <h1 class="text-center mb-5 fw-bold">Contact Us</h1>
+
+    <div class="row g-4">
+      <!-- Contact Info -->
+      <div class="col-md-5">
+        <div class="bg-white p-4 shadow-sm rounded">
+          <h5 class="mb-3 text-primary">Visit Us</h5>
+          <p><strong>Elite Tailoring</strong></p>
+          <p>123 Fashion Street,<br />Tailor Town, Kerala, 685612</p>
+          <p><strong>Phone:</strong> +91 98765 43210</p>
+          <p><strong>Email:</strong> info@elitetailoring.com</p>
+          <p><strong>Hours:</strong> Mon - Sat, 9am - 7pm</p>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="col-md-7">
+        <div class="bg-white p-4 shadow-sm rounded">
+          <h5 class="mb-3 text-primary">Send Us a Message</h5>
+
+          <% if (typeof successMessage !== 'undefined') { %>
+          <div class="alert alert-success"><%= successMessage %></div>
+          <% } %>
+
+          <form action="/contact" method="POST">
+            <div class="mb-3">
+              <label for="name" class="form-label">Your Name</label>
+              <input
+                type="text"
+                class="form-control"
+                name="name"
+                id="name"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">Your Email</label>
+              <input
+                type="email"
+                class="form-control"
+                name="email"
+                id="email"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="message" class="form-label">Your Message</label>
+              <textarea
+                class="form-control"
+                name="message"
+                id="message"
+                rows="5"
+                required
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-warning">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
