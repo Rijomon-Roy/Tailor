@@ -169,16 +169,18 @@ router.post("/approve", async (req, res) => {
   try {
     // Configure nodemailer for sending emails
     const transporter = nodemailer.createTransport({
-      service: "Gmail", // Or your preferred email provider
+      service: "gmail", // or your SMTP service
       auth: {
         user: "rijoroykallattu@gmail.com", // Replace with your email
         pass: "mgqj xciy opsk yjmt", // Replace with your email password or app password
       },
+      tls: {
+        rejectUnauthorized: false, // Add this line
+      },
     });
-
     // Email content
     const mailOptions = {
-      from: "rijoroykallttu@gmail.com", // Sender email
+      from: "rijoroykallattu@gmail.com", // Sender email
       to: email, // Recipient email
       subject: "Approval Notification",
       text: `Your data has been approved! Scheduled date and time: ${dateTime}`,
